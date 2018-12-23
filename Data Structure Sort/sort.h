@@ -117,8 +117,28 @@ void HeapSort(SqList &L) {
 	}
 }
 //πÈ≤¢≈≈–Ú
-void Merge() {
-
+typedef int RedType;
+void Merge(RedType R[], RedType T[], int low, int mid, int high) {
+	int i = low, j = mid + 1, k = low;
+	while (i < mid&&j <= high) {
+		if (R[i] <= R[j]) T[k++] = R[i++];
+		else T[k++] = R[j++];
+	}
+	while (i <= mid) T[k++] = T[i++];
+	while (j <= high) T[k++] = T[j++];
+}
+void Msort(RedType R[], RedType T[], int low, int high) {
+	RedType S[20];
+	if (low == high) T[low] = R[low];
+	else {
+		int mid = (low + high) / 2;
+		Msort(R, S, low, mid);
+		Msort(R, S, mid + 1, high);
+		Merge(R, S, low, mid, high);
+	}
+}
+void MergeSort(SqList &L) {
+	Msort(L.r, L.r, 1, L.length);
 }
 
 
