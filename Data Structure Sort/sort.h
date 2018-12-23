@@ -11,7 +11,34 @@ typedef struct {
 	KeyType r[maxn];
 	int length;
 }SqList;
-
+//’€∞Î≤Â»Î≈≈–Ú
+void BInsetSort(SqList &L) {
+	for (int i = 2; i < L.length; i++) {
+		L.r[0] = L.r[i];
+		int low = i, high = i - 1;
+		while (low <= high) {
+			int mid = (low + high) / 2;
+			if (L.r[0] > L.r[mid]) low = mid + 1;
+			else high = mid - 1;
+		}
+		for (int j = i - 1; j >= high + 1; j--) L.r[j + 1] = L.r[j];
+		L.r[high] = L.r[0];
+	}
+}
+//œ£∂˚≈≈–Ú
+void ShellInsert(SqList &L, int dt[], int t) {
+	for (int k = 0; k < t; k++) {
+		for (int i = dt[k] + 1; i < L.length; i++) {
+			if (L.r[i] < L.r[i - dt[k]]) {
+				L.r[0] = L.r[i];
+				int j;
+				for (j = i - dt[k]; j > 0 && L.r[0] < L.r[j]; j -= dt[k])
+					L.r[j + dt[k]] = L.r[j];
+				L.r[j + dt[k]] = L.r[0];
+			}
+		}
+	}
+}
 //√∞≈›≈≈–Ú
 void Bubble_sort(SqList &L){
 	bool flag = true;
@@ -60,5 +87,39 @@ void SelectSort(SqList &L) {
 		}
 	}
 }
+
+//…∏—°∑®µ˜’˚∂—
+void HeapAdjust(SqList &L, int s, int m) {
+	int rc = L.r[s];
+	for (int j = s * 2; j <= m; j *= 2) {
+		if (j < m&&L.r[j] < L.r[j + 1]) j++;
+		if (rc > L.r[j]) break;
+		L.r[s] = L.r[j];
+		s = j;
+	}
+	L.r[s] = rc;
+}
+//¥¥Ω®∂—
+void CreatHeap(SqList &L) {
+	int n = L.length;
+	for (int i = n / 2; i; i++) {
+		HeapAdjust(L, i, n);
+	}
+}
+//∂—≈≈–Ú
+void HeapSort(SqList &L) {
+	CreatHeap(L);
+	for (int i = L.length; i > 1; i--) {
+		int x = L.r[1];
+		L.r[1] = L.r[i];
+		L.r[i] = x;
+		HeapAdjust(L, 1, i - 1);
+	}
+}
+//πÈ≤¢≈≈–Ú
+void Merge() {
+
+}
+
 
 #endif // !SORT_H_INCLUEDE
